@@ -31,9 +31,10 @@ const userSchema = new Schema({
     semester: {
         type: Number
     },
-    registeredEventIds: {
-        type: [ String ]
-    }
+    registeredEventIds: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Events'
+    }]
 });
 
 const User = new model('Users',userSchema);

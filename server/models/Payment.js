@@ -7,7 +7,6 @@ const paymentSchema = new Schema({
     },
     razorpay_signature: {
         type: String,
-        required: true
     },
     razorpay_order_id: {
         type: String,
@@ -15,14 +14,13 @@ const paymentSchema = new Schema({
     },
     razorpay_payment_id: {
         type: String,
-        required: true
     },
     paymentType: {
-        type: String
+        type: String,
     },
     eventId: {
         type: String,
-    }
+    },
 });
 
 const Payments = new model('payments',paymentSchema);

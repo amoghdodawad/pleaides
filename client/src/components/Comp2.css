@@ -1,0 +1,10 @@
+.motion-div {
+    background: #000;
+    color: wheat;
+}
+
+.motion-div-expanded {
+    position: absolute;
+    top:auto;
+    left: auto;
+}

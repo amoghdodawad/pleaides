@@ -1,0 +1,30 @@
+.login-container {
+    background-color: antiquewhite;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.google-container {
+    height: 10vh;
+    width: 20vw;
+    background-color: rgb(251, 222, 185);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.google-container:hover {
+    background-color: rgb(252, 204, 141);
+    cursor: pointer;
+}
+
+/* .google-button {
+    width: 4vw;
+} */

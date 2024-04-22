@@ -1,0 +1,42 @@
+.onboarding-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: #02cfc8;
+}
+
+.onboarding-container .onboarding-form {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(31, 0, 93);
+    padding: 2rem;
+    border-radius: 0.4rem;
+}
+
+.onboarding-form input, .onboarding-form select, .onboarding-form input[type=submit]{
+    background-color: wheat;
+    font-family: 'Poppins';
+    width: 40vw;
+    height: 5vh;
+    margin: 0.5rem;
+    padding-left: 0.4rem;
+    font-weight: 450;
+    font-size: medium;
+    border-radius: 0.2rem;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    transition: all ease 500ms;
+}
+
+.onboarding-form input[type=submit]:hover {
+    cursor: pointer;
+    background-color: rgb(255, 216, 143);
+    transform: scale(1.03, 1.1);
+}

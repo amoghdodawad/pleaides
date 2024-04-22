@@ -5,6 +5,10 @@ const paymentSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     razorpay_signature: {
         type: String,
     },
@@ -21,6 +25,9 @@ const paymentSchema = new Schema({
     eventId: {
         type: String,
     },
+    amount: {
+        type: Number
+    }
 });
 
 const Payments = new model('payments',paymentSchema);

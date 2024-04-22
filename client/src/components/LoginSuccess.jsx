@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setEmail, setName, setUser, setToken } from '../redux/userSlice';
 
 function LoginSuccess() {
@@ -8,34 +8,32 @@ function LoginSuccess() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
-        if(token){
-            // localStorage.setItem('tempToken',token);
-            // console.log(navigate);
-            // navigate('/');
-        }
         async function getDetails(){
           try {
-            const res = await fetch('https://home.amoghasdodawad.dev/auth/login/success?token='+token);
+            const res = await fetch('/auth/login/success?token='+token);
             const data = await res.json();
             const { email } = data.user;
             const newToken = data.token;
-            // dispatch(setEmail(email));
-            // dispatch(setName(name));
-            // console.log(newToken);
             if(res.status === 200){
-              const userFetch = await fetch('https://home.amoghasdodawad.dev/api/user/'+email);
+              const userFetch = await fetch('/api/user/'+'email',{
+                headers: {
+                  'Authorization': `Bearer ${newToken}`
+                }
+              });
               const userData = await userFetch.json();
+              const { isRegistered, contactNumber, college } = userData.data;
+              console.log(contactNumber);
               dispatch(setUser({...userData.data, token: newToken}));
-              // console.log({ ...userData.data, token: newToken });
+              if(contactNumber && !isRegistered) navigate('/payment');
+              else if(!isRegistered) navigate('/onboarding');
+              else navigate('/');
             }
-            navigate('/');
           } catch (err) {
             console.log(err);
           }        
         }
         getDetails();
     },[])
-    // console.log(token);
   return (
     <div>LoginSuccess</div>
   )

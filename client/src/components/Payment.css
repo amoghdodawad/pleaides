@@ -1,0 +1,110 @@
+.payment-container {
+    background-color: antiquewhite;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.payment-container button {
+    height: 10vh;
+    width: 20vw;
+    background-color: rgb(251, 222, 185);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 20px;
+    border: 0;
+    transition: background-color 0.3s ease;
+}
+
+.payment-container button:hover {
+    background-color: rgb(252, 204, 141);
+    cursor: pointer;
+}
+
+.non-kle-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.payment-container .skip {
+    margin-top: 1rem;
+    padding: 0.4rem;
+    transition: all ease 300ms;
+    border-radius: 0.4rem;
+}
+
+.payment-container .skip:hover {
+    cursor: pointer;
+    background-color: rgb(252, 204, 141);
+}
+
+.payment-container .image-container {
+    background-color: rgb(252, 217, 171);
+    width: 100%;
+    border-radius: 0.4rem;
+}
+
+.payment-container ul li {
+    list-style-type: disc;
+}
+
+.payment-container .perks-container ul {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+
+.payment-container .payment-button {
+    background-color: rgb(251, 189, 109);
+    width: 100%;
+    border-radius: 0.2rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    transition: all ease 400ms;
+}
+.payment-container .payment-button:hover {
+    background-color: rgb(255, 189, 103);
+    transform: scale(1.02, 1.1);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 739px) {
+    .non-kle-card {
+        min-width: 55vw;
+        max-width: 80vw;
+        margin: 1rem;
+        padding: 0.8rem;
+        background-color: rgb(252, 204, 141);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .non-kle-card img {
+        max-width: 30vw;
+    }
+}
+
+@media screen and (min-width: 740px) {
+    .non-kle-card {
+        max-width: 40vw;
+        margin: 1rem;
+        padding: 0.8rem;
+        background-color: rgb(252, 204, 141);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .non-kle-card img {
+        max-width: 20vw;
+    }
+}

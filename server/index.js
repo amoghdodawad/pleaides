@@ -10,9 +10,11 @@ const cors = require('cors');
 const { connect } = require('mongoose');
 const Payments = require('./models/Payment');
 const User = require('./models/User');
+const Accomodation = require('./models/Accomodation');
+const path = require('path');
 const app = express();
 
-const PORT = process.env.PORT || 4430;
+const PORT = process.env.PORT || 443;
 
 connect('mongodb+srv://test:test1234@cluster0.vohziuq.mongodb.net/pleaides')
     .then(() => {
@@ -27,30 +29,47 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-app.get('/', ( req, res ) => {
-    res.end('Hello world');
-});
+// app.get('/', ( req, res ) => {
+//     res.end('Hello world');
+// });
+app.use('/',express.static('build'));
 
 app.post('/payment-capture', async ( req, res ) => {
-    console.log(req.body.event === 'payment.captured');
     if(req.body.event === 'payment.captured'){
-        const { id, order_id } = req.body.payload.payment.entity;
-        console.log(id, order_id);
+        const { id, order_id, amount } = req.body.payload.payment.entity;
         try {
-            const res = await Payments.findOneAndUpdate({ razorpay_order_id: order_id }, { razorpay_payment_id: id, razorpay_signature: req.headers['x-razorpay-signature'] } );
-            // console.log(res);
+            const res = await Payments.findOneAndUpdate({ razorpay_order_id: order_id }, { razorpay_payment_id: id, razorpay_signature: req.headers['x-razorpay-signature'], amount } );
             const { kleId } = res;
-            await User.findOneAndUpdate({ kleId }, { isRegistered: true });
+            await User.findOneAndUpdate({ kleId }, { isRegistered: true, isAccomodated: amount === 350000 });
+            if(amount === 350000){
+                await Accomodation.create({
+                    kleId,
+                    aadharNumber: 'Yet to be assigned',
+                    gender: 'Yet to be assigned'
+                })
+            }
         } catch (error) {
             
         }
     }
     res.status(200).json({ message: 'OK '});
-})
+});
 
 app.use('/auth',authRouter);
 app.use('/api/user',userRouter);
 app.use('/api/orders',orderRouter);
+
+app.use((req, res, next) => {
+    console.log('Here');
+    if (/(.ico|.js|.css|.jpg|.png|.map)$/i.test(req.path)) {
+        next();
+    } else {
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+        res.header('Expires', '-1');
+        res.header('Pragma', 'no-cache');
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    }
+});
 
 const credentials = {
     key : readFileSync('./certificates/server.key'),
@@ -58,6 +77,6 @@ const credentials = {
 }
 const server = https.createServer(credentials,app);
 
-server.listen(PORT,'2405:201:d015:2a9:18cf:1d5:f886:f3f4', () => {
+server.listen(PORT,'2405:201:d024:50a1:4f6d:6761:23f5:da97', () => {
     console.log(`Listening on PORT ${PORT}`);
 })

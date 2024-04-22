@@ -9,6 +9,9 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    contactNumber: {
+        type: String
+    },
     kleId: {
         type: String,
         required: true
@@ -34,7 +37,10 @@ const userSchema = new Schema({
     registeredEventIds: [{
         type: Schema.Types.ObjectId,
         ref: 'Events'
-    }]
+    }],
+    gender: {
+        type: String
+    }
 });
 
 const User = new model('Users',userSchema);

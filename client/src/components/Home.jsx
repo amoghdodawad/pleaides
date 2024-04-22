@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 
 function Home() {
     const { name } = useSelector(store => store.user);
-    console.log(name);
     function logOut(){
         localStorage.clear();
         window.location.href = '/'

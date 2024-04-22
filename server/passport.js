@@ -12,6 +12,17 @@ passport.use(new GoogleStratergy({
     callbackURL: '/auth/google/callback'
     },
     async function(accessToken, refreshToken, profile, done){
+        const email = profile.emails[0].value;
+        const college = email.split('@')[1].split('.')[0];
+        if(college === "kletech"){
+            let str = email.split('@')[0].split('e')[1];
+            const year = parseInt(str[0]+str[1]);
+            if(year < 20 || year > 23){
+                return done(null,{ isInvalidUser: true });
+            }
+            // console.log(year);
+        }
+        // console.log(college);
         try {
             const user = await User.findOne({ email: profile.emails[0].value});
 
@@ -19,9 +30,9 @@ passport.use(new GoogleStratergy({
                 /*
                     This should be made a new function - generateKleId(name): kleId
                 */
-                const tempId = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-                console.log(tempId);
-                let newId = 'KLEPLE';
+                const tempId = (Math.floor(Math.random() * 100000) + 100000).toString().substring(1);
+                // console.log(tempId);
+                let newId = 'PLD';
                 newId += profile.displayName.split(" ")[0].toLocaleUpperCase().slice(0,3);
                 newId += tempId;
                 console.log(newId);
@@ -32,7 +43,7 @@ passport.use(new GoogleStratergy({
                     kleId: newId
                 });
                 const res = await newUser.save();
-                console.log(res);
+                // console.log(res);
             } else {
                 
             }

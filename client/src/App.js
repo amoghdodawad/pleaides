@@ -13,6 +13,7 @@ import Payment from './components/Payment';
 import Onboarding from './components/Onboarding';
 import Protected from './components/Protected';
 import UnProtected from './components/UnProtected';
+import Events from './components/Events';
 
 function App() {
   // console.log(store.getState());
@@ -47,6 +48,7 @@ function App() {
                   <Onboarding/>
                 </Protected>
               }/>
+              <Route path='/events' element={<Events/>}/>
             </Routes>
           {/* </div> */}
         </PersistGate>

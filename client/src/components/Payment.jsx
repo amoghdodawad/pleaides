@@ -1,15 +1,23 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import './Payment.css';
 import { setRegistered } from '../redux/userSlice';
-import img from './pleiadesBlack.png'
+import img from './pleiadesBlack.png';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 function Payment() {
-    const { email, isKle, token, isRegistered } = useSelector(store => store.user);
+    const [ isDisabled, setIsDisabled ] = useState(false);
+    const { name, contactNumber, email, isKle, token, isRegistered } = useSelector(store => store.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    let timer = null;
+
+    useEffect(() => {
+        return () => {
+            if(timer) clearTimeout(timer);
+        }
+    },[])
 
     if(isRegistered){
         return <Navigate to='/'/>
@@ -29,6 +37,9 @@ function Payment() {
     }
 
     async function displayRazorpay(pkg = 0) {
+        if(isDisabled) return;
+        setIsDisabled(true);
+        timer = setTimeout(() => { setIsDisabled(false) }, 10000);
         const temp = {
             email: 'email'
         };
@@ -63,7 +74,7 @@ function Payment() {
                 key: "rzp_test_xUeR6QGk0YyHI9", // Enter the Key ID generated from the Dashboard
                 amount: amount.toString(),
                 currency: currency,
-                name: "Pleaides",
+                name: "Pleiades",
                 description: "Test Transaction",
                 order_id: order_id,
                 handler: async function (response) {
@@ -71,26 +82,14 @@ function Payment() {
                         dispatch(setRegistered());
                     }
                     navigate('/');
-                    // const data = {
-                    //     orderCreationId: order_id,
-                    //     razorpayPaymentId: response.razorpay_payment_id,
-                    //     razorpayOrderId: response.razorpay_order_id,
-                    //     razorpaySignature: response.razorpay_signature,
-                    // };
-
-
-                    // const result = await axios.post("http://localhost:5000/payment/success", data);
-
-                    // alert(result.data.msg);
                 },
-                // prefill: {
-                //     name: "Amogh Dodawad",
-                //     email: "amoghasdodawadddd@gmail.com",
-                //     kleId: 'KLEPLEAMO1880',
-                //     contact: "8147078932",
-                // },
+                prefill: {
+                    name,
+                    email,
+                    contact: contactNumber
+                },
                 notes: {
-                    address: "Amogh Dodawad Corporate Office",
+                    address: "Pleiades Corporate Office",
                 },
                 theme: {
                     color: "#61dafb",
@@ -144,7 +143,7 @@ function Payment() {
             }
             {!isKle && 
                 <div className='non-kle-container'>
-                    <div className='non-kle-card' onClick={() => displayRazorpay(1)}>
+                    <div className='non-kle-card'>
                         <div className='image-container'>
                             <img src={img} alt="" />
                         </div>
@@ -173,11 +172,11 @@ function Payment() {
                                 </li>
                             </ul>
                         </div>
-                        <div className='payment-button'>
+                        <div className='payment-button' onClick={() => displayRazorpay(1)}>
                             2500
                         </div>
                     </div>
-                    <div className='non-kle-card' onClick={() => displayRazorpay(2)}>
+                    <div className='non-kle-card'>
                         <div className='image-container'>
                             <img src={img} alt="" />
                         </div>
@@ -206,7 +205,7 @@ function Payment() {
                                 </li>
                             </ul>
                         </div>
-                        <div className='payment-button'>
+                        <div className='payment-button' onClick={() => displayRazorpay(2)}>
                             3500
                         </div>
                     </div>

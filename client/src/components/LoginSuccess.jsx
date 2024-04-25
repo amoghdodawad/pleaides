@@ -22,11 +22,10 @@ function LoginSuccess() {
               });
               const userData = await userFetch.json();
               const { isRegistered, contactNumber, college } = userData.data;
-              console.log(contactNumber);
               dispatch(setUser({...userData.data, token: newToken}));
-              if(contactNumber && !isRegistered) navigate('/payment');
-              else if(!isRegistered) navigate('/onboarding');
-              else navigate('/');
+              if(contactNumber && !isRegistered) navigate('/payment',{ replace: true });
+              else if(!isRegistered) navigate('/onboarding',{ replace: true });
+              else navigate('/',{ replace: true });
             }
           } catch (err) {
             console.log(err);

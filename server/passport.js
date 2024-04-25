@@ -35,8 +35,8 @@ passport.use(new GoogleStratergy({
                 let newId = 'PLD';
                 newId += profile.displayName.split(" ")[0].toLocaleUpperCase().slice(0,3);
                 newId += tempId;
-                console.log(newId);
-                console.log(profile.displayName);
+                // console.log(newId);
+                // console.log(profile.displayName);
                 const newUser = new User({
                     name: profile.displayName,
                     email: profile.emails[0].value,

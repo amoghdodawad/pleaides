@@ -8,7 +8,7 @@ async function auth( req, res, next ){
         // console.log(token);
         const user = await verifyToken(token,'secret');
         req.body.email = user.email;
-        req.body.kleId = user.kleId;
+        if(user.kleId) req.body.kleId = user.kleId;
         // console.log(user);
         // req.body.email = 'amoghasdodawad@gmail.com'
         next();

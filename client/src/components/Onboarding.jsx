@@ -18,12 +18,19 @@ function Onboarding() {
     }
 
     if(contactNumber){
-        console.log('here');
         return <Navigate to='/' replace/>
     }
 
     async function handleSubmit(event) {
         event.preventDefault();
+        if(semRef.current.value < 1 || semRef.current.value > 10) {
+            alert(`Semester value should be between 1 and 10`);
+            return;
+        }
+        if(phoneRef.current.value?.length !== 10){
+            alert('Please enter the right phone number');
+            return;
+        }
         if(genderRef.current.value === 'select'){
             alert('Please select the gender');
             return;

@@ -1,4 +1,4 @@
-const Events = require("../models/Event");
+const Events = require("../models/Competition");
 const User = require("../models/User");
 
 async function getUser( req, res ){
@@ -10,7 +10,7 @@ async function getUser( req, res ){
         const arr = new Array();
         await Promise.allSettled(data.registeredEventIds.map(async ( eventId ) => {
             try {
-                const event = await Events.findOne({ _id: eventId }, { _id: 0 });
+                const event = await Events.findOne({ eventId }, { _id: 0 });
                 arr.push(event);
             } catch (error) {
                 

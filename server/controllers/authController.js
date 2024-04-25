@@ -29,6 +29,7 @@ function googleCallbackOne( req, res, next ){
 };
 
 async function googleCallbackTwo( req, res ) {
+    // console.log(req.user);
     if(req.user.isInvalidUser) return res.redirect(FRONTEND_URL+'/login-error?error=Invalid_Kle_Account;Please_use_accounts_between_2020_&_2023');
     
     try {

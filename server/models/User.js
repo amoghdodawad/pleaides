@@ -35,8 +35,8 @@ const userSchema = new Schema({
         type: Number
     },
     registeredEventIds: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Events'
+        type: String,
+        ref: 'Competition'
     }],
     gender: {
         type: String

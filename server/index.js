@@ -4,6 +4,8 @@ const { readFileSync } = require('fs');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const orderRouter = require('./routes/orders');
+const competitionRouter = require('./routes/competition');
+const videoRouter = require('./routes/video');
 const passportSetup = require('./passport');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -12,6 +14,7 @@ const Payments = require('./models/Payment');
 const User = require('./models/User');
 const Accomodation = require('./models/Accomodation');
 const path = require('path');
+const { createAndSendMail } = require('./controllers/mailControllers');
 const app = express();
 
 const PORT = process.env.PORT || 443;
@@ -35,11 +38,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/',express.static('build'));
 
 app.post('/payment-capture', async ( req, res ) => {
+    res.status(200).json({ message: 'OK '});
     if(req.body.event === 'payment.captured'){
         const { id, order_id, amount } = req.body.payload.payment.entity;
+        console.log(req.body.payload.payment.entity);
         try {
             const res = await Payments.findOneAndUpdate({ razorpay_order_id: order_id }, { razorpay_payment_id: id, razorpay_signature: req.headers['x-razorpay-signature'], amount } );
-            const { kleId } = res;
+            const { kleId, email } = res;
             await User.findOneAndUpdate({ kleId }, { isRegistered: true, isAccomodated: amount === 350000 });
             if(amount === 350000){
                 await Accomodation.create({
@@ -47,17 +52,19 @@ app.post('/payment-capture', async ( req, res ) => {
                     aadharNumber: 'Yet to be assigned',
                     gender: 'Yet to be assigned'
                 })
-            }
+            };
+            await createAndSendMail({ to: email, isAccomodated: amount === 350000, kleId });
         } catch (error) {
             
         }
     }
-    res.status(200).json({ message: 'OK '});
 });
 
 app.use('/auth',authRouter);
 app.use('/api/user',userRouter);
 app.use('/api/orders',orderRouter);
+app.use('/api/competition',competitionRouter);
+app.use('/api/video',videoRouter);
 
 app.use((req, res, next) => {
     console.log('Here');
@@ -79,4 +86,4 @@ const server = https.createServer(credentials,app);
 
 server.listen(PORT,'2405:201:d024:50a1:4f6d:6761:23f5:da97', () => {
     console.log(`Listening on PORT ${PORT}`);
-})
+});

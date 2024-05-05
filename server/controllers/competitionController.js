@@ -117,7 +117,12 @@ async function registerToEvent( req, res ){
     const session = await mongoose.startSession();
     session.startTransaction();
     const { participantKleIds, eventId } = req.body;
+    if(!participantKleIds || !eventId){
+        return res.status(400).json({ message: 'fields missing' });
+    }
+    console.log(participantKleIds);
     const teamleadKleId = participantKleIds[0];
+    console.log(teamleadKleId);
     participantKleIds.shift();
     try {
         // Perform operations within the transaction

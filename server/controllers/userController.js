@@ -2,7 +2,8 @@ const Events = require("../models/Competition");
 const User = require("../models/User");
 
 async function getUser( req, res ){
-    const { email } = req.body;
+    let { email } = req.body;
+    if(email === undefined) email = req.params.email;
     try {
         const data = await User.findOne({ email }, { password: 0, _id: 0 });
         if(!data) return res.status(404).json({ message: 'User doesn\'t exist' });

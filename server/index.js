@@ -18,6 +18,7 @@ const { createAndSendMail } = require('./controllers/mailControllers');
 const app = express();
 
 const PORT = process.env.PORT || 443;
+const HOST = process.env.HOST || 443;
 
 connect('mongodb+srv://test:test1234@cluster0.vohziuq.mongodb.net/pleaides')
     .then(() => {
@@ -87,3 +88,7 @@ const server = https.createServer(credentials,app);
 server.listen(PORT,'2405:201:d024:50a1:4f6d:6761:23f5:da97', () => {
     console.log(`Listening on PORT ${PORT}`);
 });
+
+app.listen(80,'2405:201:d024:50a1:4f6d:6761:23f5:da97',() => {
+    console.log(`Listening on PORT 80`);
+})
